@@ -30,7 +30,7 @@ jobs:
           pip install mystmd
           myst --version
       
-      - name: Build (export two pages)
+      - name: Build site for GitHub Pages
         run: |
           set -euxo pipefail
           ls -la
@@ -39,17 +39,19 @@ jobs:
           mkdir -p _build/html
       
           # Export README.md and the notebook as standalone HTML files
-          myst export --html README.md --output _build/html
-          myst export --html LOSC_Event_tutorial.ipynb --output _build/html
+          myst export html README.md --output _build/html/README.html
+          myst export html LOSC_Event_tutorial.ipynb --output _build/html/LOSC_Event_tutorial.html
       
-          # Make README the site homepage for GitHub Pages
+          # Rename README.html -> index.html so Pages shows it as the homepage
           if [ -f _build/html/README.html ]; then
             mv _build/html/README.html _build/html/index.html
           fi
       
-          # Sanity checks
+          # Verify the outputs exist
           test -f _build/html/index.html
           test -f _build/html/LOSC_Event_tutorial.html
+      
+          echo "✅ Exported files:"
           find _build/html -maxdepth 2 -type f | sed 's/^/  - /' | head -n 50
       
       - name: Upload artifact
