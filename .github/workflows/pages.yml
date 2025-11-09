@@ -36,7 +36,7 @@ jobs:
           # sanity: show what's in the repo root
           ls -la
           # Build just the two pages we want and force the output folder
-          myst build --html index.md LOSC_Event_tutorial.ipynb --out _build/html
+          myst build --html index.md LOSC_Event_tutorial.ipynb --output _build/html
           # verify output exists
           test -d _build/html
           find _build/html -maxdepth 2 -type f | head -n 50
