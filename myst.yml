@@ -8,3 +8,6 @@ project:
   toc:
     - file: README.md
     - file: LOSC_Event_tutorial.ipynb
+
+site:
+  template: book
