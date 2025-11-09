@@ -19,7 +19,7 @@
       "force": false,
       "checkLinks": false,
       "strict": false,
-      "ci": true,
+      "ci": false,
       "maxSizeWebp": 1572864,
       "keepHost": false
     },
