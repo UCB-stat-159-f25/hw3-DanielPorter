@@ -33,19 +33,18 @@ jobs:
       - name: Build HTML
         run: |
           set -euxo pipefail
-          # sanity: show what's in the repo root
           ls -la
-          # Build just the two pages we want and force the output folder
-          myst build --html index.md LOSC_Event_tutorial.ipynb --output _build/html
-          # verify output exists
-          test -d _build/html
-          find _build/html -maxdepth 2 -type f | head -n 50
-
+          # Build BOTH pages in one command (no --output when multiple inputs)
+          myst build --html index.md LOSC_Event_tutorial.ipynb
+          # MyST writes to .myst/build/html by default
+          test -d .myst/build/html
+          find .myst/build/html -maxdepth 2 -type f | head -n 50
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _build/html
-
+          path: .myst/build/html
+          
   deploy:
     needs: build
     runs-on: ubuntu-latest
