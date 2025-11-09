@@ -30,7 +30,7 @@ jobs:
           pip install mystmd
           myst --version
       
-      - name: Build site for GitHub Pages
+      - name: Build HTML
         run: |
           set -euxo pipefail
           ls -la
@@ -38,33 +38,30 @@ jobs:
           rm -rf _build/html
           mkdir -p _build/html
       
-          # Export README.md and the notebook as standalone HTML using the CLI defaults
-          # (this writes the HTML next to the inputs or under .myst/build/html depending on version)
-          myst export html README.md
-          myst export html LOSC_Event_tutorial.ipynb
+          # Initialize a minimal MyST project if needed
+          myst init --yes || true
       
-          # Collect the possible outputs (handles different myst versions/paths)
-          for f in \
-            README.html \
-            LOSC_Event_tutorial.html \
-            .myst/build/html/README.html \
-            .myst/build/html/LOSC_Event_tutorial.html
-          do
-            if [ -f "$f" ]; then
-              cp "$f" _build/html/
-            fi
-          done
+          # Copy README and notebook into place so they're part of the build
+          mkdir -p content
+          cp README.md content/
+          cp LOSC_Event_tutorial.ipynb content/
       
-          # Make README the homepage
+          # Build the site (MyST automatically finds files in ./content)
+          myst build
+      
+          # MyST outputs to .myst/build/html by default
+          cp -r .myst/build/html/* _build/html/
+      
+          # Rename README.html to index.html (for the homepage)
           if [ -f _build/html/README.html ]; then
             mv _build/html/README.html _build/html/index.html
           fi
       
-          # Sanity checks
+          # Sanity check
           test -f _build/html/index.html
-          test -f _build/html/LOSC_Event_tutorial.html
-          echo "✅ Files to deploy:"
-          find _build/html -maxdepth 2 -type f -print
+          echo "✅ Built HTML files:"
+          find _build/html -maxdepth 2 -type f | sed 's/^/  - /' | head -n 50
+
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
