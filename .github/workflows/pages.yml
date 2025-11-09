@@ -38,21 +38,33 @@ jobs:
           rm -rf _build/html
           mkdir -p _build/html
       
-          # Export README.md and the notebook as standalone HTML files
-          myst export html README.md --output _build/html/README.html
-          myst export html LOSC_Event_tutorial.ipynb --output _build/html/LOSC_Event_tutorial.html
+          # Export README.md and the notebook as standalone HTML using the CLI defaults
+          # (this writes the HTML next to the inputs or under .myst/build/html depending on version)
+          myst export html README.md
+          myst export html LOSC_Event_tutorial.ipynb
       
-          # Rename README.html -> index.html so Pages shows it as the homepage
+          # Collect the possible outputs (handles different myst versions/paths)
+          for f in \
+            README.html \
+            LOSC_Event_tutorial.html \
+            .myst/build/html/README.html \
+            .myst/build/html/LOSC_Event_tutorial.html
+          do
+            if [ -f "$f" ]; then
+              cp "$f" _build/html/
+            fi
+          done
+      
+          # Make README the homepage
           if [ -f _build/html/README.html ]; then
             mv _build/html/README.html _build/html/index.html
           fi
       
-          # Verify the outputs exist
+          # Sanity checks
           test -f _build/html/index.html
           test -f _build/html/LOSC_Event_tutorial.html
-      
-          echo "✅ Exported files:"
-          find _build/html -maxdepth 2 -type f | sed 's/^/  - /' | head -n 50
+          echo "✅ Files to deploy:"
+          find _build/html -maxdepth 2 -type f -print
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
