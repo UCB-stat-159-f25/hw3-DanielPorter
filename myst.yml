@@ -1,13 +1,10 @@
 version: 1
 
 project:
-  title: "STAT 159/259 – LIGO HW3"
+  title: "STAT 159 HW3"
   authors:
     - "Ligo Scientific Collaboration (LSC), Daniel Porter"
   binder: https://mybinder.org
   toc:
     - file: README.md
     - file: LOSC_Event_tutorial.ipynb
-
-site:
-  template: book
