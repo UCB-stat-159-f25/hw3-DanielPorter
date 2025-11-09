@@ -6,5 +6,5 @@ project:
     - "Ligo Scientific Collaboration (LSC), Daniel Porter"
   binder: https://mybinder.org
   toc:
-    - file: index.md
+    - file: README.md
     - file: LOSC_Event_tutorial.ipynb
