@@ -4,7 +4,10 @@ project:
   title: "STAT 159 HW3"
   authors:
     - "Ligo Scientific Collaboration (LSC), Daniel Porter"
-  binder: https://mybinder.org
+  binder: https://mybinder.org 
   toc:
     - file: README.md
     - file: LOSC_Event_tutorial.ipynb
+
+site:
+  template: book
