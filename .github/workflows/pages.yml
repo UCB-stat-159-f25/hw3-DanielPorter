@@ -29,12 +29,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install mystmd
           myst --version
-
+      
       - name: Build HTML
         run: |
           set -euxo pipefail
-          myst build --html
-          test -d _build/html  # fail fast if nothing was produced
+          # sanity: show what's in the repo root
+          ls -la
+          # Build just the two pages we want and force the output folder
+          myst build --html index.md LOSC_Event_tutorial.ipynb --out _build/html
+          # verify output exists
+          test -d _build/html
+          find _build/html -maxdepth 2 -type f | head -n 50
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
