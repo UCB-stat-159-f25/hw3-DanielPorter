@@ -35,7 +35,7 @@ jobs:
           set -euxo pipefail
           ls -la
           # Build BOTH pages in one command (no --output when multiple inputs)
-          myst build --html index.md LOSC_Event_tutorial.ipynb
+          myst build --html README.md LOSC_Event_tutorial.ipynb
           # MyST writes to .myst/build/html by default
           test -d .myst/build/html
           find .myst/build/html -maxdepth 2 -type f | head -n 50
